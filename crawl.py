@@ -16,7 +16,7 @@ bookTitleTag="'CITATIONS', 'DATE_ASC', 'var_spell.cfg', '', '', 'Y' )</SCRIPT><T
 dateTag = "<BR><SPAN CLASS=\"boldtext\">Date:</SPAN"
 fulltextTag = "<SCRIPT>fturl='';write_fulltext_start_link('"
 
-# Aggregation Vars 
+# Aggregation Vars
 bookTitle = ""
 date = ""
 bookID = ""
@@ -30,7 +30,7 @@ parsedFullText = False
 
 # fd.write('title,date,bookID,parseFile,order,sessionFile')
 
-with open('results.csv','a', encoding='utf-16') as fd:
+with open('crawlResults.csv','a', encoding='utf-16') as fd:
     while retrieveFrom < retrieveCap:
         print("Retrieving from " + str(retrieveFrom) + " to " + str(retrieveFrom + 99))
         indexedFormData = formData + "&RETRIEVEFROM=" + str(retrieveFrom)
@@ -43,7 +43,7 @@ with open('results.csv','a', encoding='utf-16') as fd:
                 m = re.search('<B>\d+\.&nbsp;(.+)</B>', line)
                 bookTitle = m.group(1).replace(',', ';')
                 parsedTitle = True
-                
+
             if dateTag in line:
                 m = re.search('<BR><SPAN CLASS="boldtext">Date:</SPAN>\s(.+)', line)
                 date = m.group(1).replace(',', ';')
@@ -59,7 +59,7 @@ with open('results.csv','a', encoding='utf-16') as fd:
 
             if parsedTitle and parsedDate and parsedFullText:
                 fd.write(bookTitle + ',' + date + ',' + bookID + ',' + parseFile + ',' + order + ',' + sessionFile + '\n')
-                
+
                 parsedTitle = False
                 parsedDate = False
                 parsedFullText = False
