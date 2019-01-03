@@ -2,6 +2,7 @@ import csv
 import requests
 import re
 import code
+import sys
 
 # Constants for the HTTP request
 reqURL = "http://eebo.chadwyck.com.ezproxy.cul.columbia.edu/search/fulltext?ACTION=ByID"
