@@ -32,7 +32,9 @@ with open('crawlResults.csv', newline='', encoding='utf-16') as csvfile:
                 filtered = re.sub('\s+', ' ', filtered)
                 fd.write(filtered + '\n')
 
+        print(f"Finished processing book {counter}")
         counter += 1
-        break
+
+        sys.stdout.flush()
 
 # http://eebo.chadwyck.com.ezproxy.cul.columbia.edu/search/fulltext?ACTION=ByID&ID=D00000998449480000&SOURCE=var_spell.cfg&WARN=N&FILE=../session/1546548707_14257
