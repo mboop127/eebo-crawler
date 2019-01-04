@@ -1,14 +1,13 @@
 import csv
 import requests
 import re
-import code
 import sys
 
 # Constants for the HTTP request
 reqURL = "http://eebo.chadwyck.com.ezproxy.cul.columbia.edu/search/fulltext?ACTION=ByID"
 cookieObj = {
     "UID": "NYcolumbia",
-    "ezproxy": "cUHL7xcVgPWBMGQ"
+    "ezproxy": "mqqKnUAzbViNA77"
 }
 
 with open('crawlResults.csv', newline='', encoding='utf-16') as csvfile:
@@ -23,15 +22,34 @@ with open('crawlResults.csv', newline='', encoding='utf-16') as csvfile:
 
         del responsePars[:3]
 
+        if len(responsePars) == 0:
+            responsePars = re.sub('[\s\S]*<P ALIGN="CENTER"><A NAME="page-1">', '', response.text, 1).split('<BR>')
+            del responsePars[0]
+            del responsePars[len(responsePars) - 1]
 
-        for pars in responsePars:
             with open(f'books/{counter}.txt','a', encoding='utf-16') as fd:
-                filtered = re.sub('<P ALIGN="CENTER">.+</P>', '', pars)
-                filtered = re.sub('<.+>', '', filtered)
-                filtered = re.sub('end_check_tcp_subs[^<]+', '', filtered)
-                filtered = re.sub('\n', '', filtered)
-                filtered = re.sub('\s+', ' ', filtered)
-                fd.write(filtered + '\n')
+                for pars in responsePars:
+                    filtered = re.sub('<P ALIGN="CENTER">.+</P>', '', pars)
+                    filtered = re.sub('<.+>', '', filtered)
+                    filtered = re.sub('\n', '', filtered)
+                    filtered = re.sub('\s+', ' ', filtered)
+
+                    if filtered != ' ' and filtered != '':
+                        fd.write(filtered + '\n')
+
+                fd.close()
+        else:
+            print(f"Starting processing book {counter} with {len(responsePars)} lines")
+            with open(f'books/{counter}.txt','a', encoding='utf-16') as fd:
+                for pars in responsePars:
+                    filtered = re.sub('<P ALIGN="CENTER">.+</P>', '', pars)
+                    filtered = re.sub('<.+>', '', filtered)
+                    filtered = re.sub('end_check_tcp_subs[^<]+', '', filtered)
+                    filtered = re.sub('\n', '', filtered)
+                    filtered = re.sub('\s+', ' ', filtered)
+                    fd.write(filtered + '\n')
+
+                fd.close()
 
         print(f"Finished processing book {counter}")
         counter += 1
