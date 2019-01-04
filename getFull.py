@@ -7,51 +7,54 @@ import sys
 reqURL = "http://eebo.chadwyck.com.ezproxy.cul.columbia.edu/search/fulltext?ACTION=ByID"
 cookieObj = {
     "UID": "NYcolumbia",
-    "ezproxy": "mqqKnUAzbViNA77"
+    "ezproxy": "cl7guYD9UD4QDrG"
 }
+
+startIndex = 916
 
 with open('crawlResults.csv', newline='', encoding='utf-16') as csvfile:
     counter = 0
     reader = csv.reader(csvfile, delimiter=',', quotechar='|')
     for row in reader:
-        fulltextURL = reqURL + f"&ID={row[2]}&SOURCE={row[3]}&WARN=N&FILE={row[5]}"
+        if counter >= startIndex:
+            fulltextURL = reqURL + f"&ID={row[2]}&SOURCE={row[3]}&WARN=N&FILE={row[5]}"
 
-        s = requests.Session()
-        response = requests.get(fulltextURL, cookies=cookieObj)
-        responsePars = response.text.split('<P>')
+            s = requests.Session()
+            response = requests.get(fulltextURL, cookies=cookieObj)
+            responsePars = response.text.split('<P>')
 
-        del responsePars[:3]
+            del responsePars[:3]
 
-        if len(responsePars) == 0:
-            responsePars = re.sub('[\s\S]*<P ALIGN="CENTER"><A NAME="page-1">', '', response.text, 1).split('<BR>')
-            del responsePars[0]
-            del responsePars[len(responsePars) - 1]
+            if len(responsePars) == 0:
+                responsePars = re.sub('[\s\S]*<P ALIGN="CENTER"><A NAME="page-1">', '', response.text, 1).split('<BR>')
+                del responsePars[0]
+                del responsePars[len(responsePars) - 1]
 
-            with open(f'books/{counter}.txt','a', encoding='utf-16') as fd:
-                for pars in responsePars:
-                    filtered = re.sub('<P ALIGN="CENTER">.+</P>', '', pars)
-                    filtered = re.sub('<.+>', '', filtered)
-                    filtered = re.sub('\n', '', filtered)
-                    filtered = re.sub('\s+', ' ', filtered)
+                with open(f'books/{counter}.txt','a', encoding='utf-16') as fd:
+                    for pars in responsePars:
+                        filtered = re.sub('<P ALIGN="CENTER">.+</P>', '', pars)
+                        filtered = re.sub('<.+>', '', filtered)
+                        filtered = re.sub('\n', '', filtered)
+                        filtered = re.sub('\s+', ' ', filtered)
 
-                    if filtered != ' ' and filtered != '':
+                        if filtered != ' ' and filtered != '':
+                            fd.write(filtered + '\n')
+
+                    fd.close()
+            else:
+                print(f"Starting processing book {counter} with {len(responsePars)} lines")
+                with open(f'books/{counter}.txt','a', encoding='utf-16') as fd:
+                    for pars in responsePars:
+                        filtered = re.sub('<P ALIGN="CENTER">.+</P>', '', pars)
+                        filtered = re.sub('<.+>', '', filtered)
+                        filtered = re.sub('end_check_tcp_subs[^<]+', '', filtered)
+                        filtered = re.sub('\n', '', filtered)
+                        filtered = re.sub('\s+', ' ', filtered)
                         fd.write(filtered + '\n')
 
-                fd.close()
-        else:
-            print(f"Starting processing book {counter} with {len(responsePars)} lines")
-            with open(f'books/{counter}.txt','a', encoding='utf-16') as fd:
-                for pars in responsePars:
-                    filtered = re.sub('<P ALIGN="CENTER">.+</P>', '', pars)
-                    filtered = re.sub('<.+>', '', filtered)
-                    filtered = re.sub('end_check_tcp_subs[^<]+', '', filtered)
-                    filtered = re.sub('\n', '', filtered)
-                    filtered = re.sub('\s+', ' ', filtered)
-                    fd.write(filtered + '\n')
+                    fd.close()
 
-                fd.close()
-
-        print(f"Finished processing book {counter}")
+            print(f"Finished processing book {counter}")
         counter += 1
 
         sys.stdout.flush()
