@@ -10,7 +10,7 @@ cookieObj = {
     "ezproxy": "CFNh81NhmKRfgfO"
 }
 
-startIndex = 2918
+startIndex = 3919
 
 with open('crawlResults.csv', newline='', encoding='utf-16') as csvfile:
     counter = 0
