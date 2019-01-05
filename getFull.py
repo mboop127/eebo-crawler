@@ -4,13 +4,13 @@ import re
 import sys
 
 # Constants for the HTTP request
-reqURL = "http://eebo.chadwyck.com.ezproxy.cul.columbia.edu/search/fulltext?ACTION=ByID"
+reqURL = "http://eebo.chadwyck.com.proxy.bc.edu/search/fulltext?ACTION=ByID"
 cookieObj = {
-    "UID": "NYcolumbia",
-    "ezproxy": "cl7guYD9UD4QDrG"
+    "UID": "bostonc",
+    "ezproxy": "CFNh81NhmKRfgfO"
 }
 
-startIndex = 916
+startIndex = 1917
 
 with open('crawlResults.csv', newline='', encoding='utf-16') as csvfile:
     counter = 0
