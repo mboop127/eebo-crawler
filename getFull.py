@@ -7,7 +7,7 @@ import sys
 reqURL = "http://eebo.chadwyck.com.proxy.bc.edu/search/fulltext?ACTION=ByID"
 cookieObj = {
     "UID": "bostonc",
-    "ezproxy": "CFNh81NhmKRfgfO"
+    "ezproxy": "4ltuL1aZhFTqSfZ"
 }
 
 startIndex = 3919
