@@ -4,10 +4,10 @@ import re
 import sys
 
 # Constants for the HTTP request
-reqURL = "http://eebo.chadwyck.com.proxy.bc.edu/search/fulltext?ACTION=ByID"
+reqURL = "http://eebo.chadwyck.com.ezproxy.cul.columbia.edu/search/fulltext?ACTION=ByID"
 cookieObj = {
-    "UID": "bostonc",
-    "ezproxy": "4ltuL1aZhFTqSfZ"
+    "UID": "NYcolumbia",
+    "ezproxy": "gZXdlAqR5LzMmTV"
 }
 
 startIndex = 3919
