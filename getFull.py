@@ -7,10 +7,10 @@ import sys
 reqURL = "http://eebo.chadwyck.com.ezproxy.cul.columbia.edu/search/fulltext?ACTION=ByID"
 cookieObj = {
     "UID": "NYcolumbia",
-    "ezproxy": "gZXdlAqR5LzMmTV"
+    "ezproxy": "AdNzqTeXec3Must"
 }
 
-startIndex = 3919
+startIndex = 18342
 
 with open('crawlResults.csv', newline='', encoding='utf-16') as csvfile:
     counter = 0
@@ -58,5 +58,3 @@ with open('crawlResults.csv', newline='', encoding='utf-16') as csvfile:
         counter += 1
 
         sys.stdout.flush()
-
-# http://eebo.chadwyck.com.ezproxy.cul.columbia.edu/search/fulltext?ACTION=ByID&ID=D00000998449480000&SOURCE=var_spell.cfg&WARN=N&FILE=../session/1546548707_14257
